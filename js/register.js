@@ -5,7 +5,12 @@ Promise.all([
   faceapi.nets.faceExpressionNet.loadFromUri("../models"),
   faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
 ])
-  .then(() => getStream())
+  .then(() => {
+    Emitter.emit({ message: "Models loaded successfully" });
+    getStream().catch((error) => {
+      Emitter.emit({ message: "failed tog get stream", error });
+    });
+  })
   .catch((error) => {
     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
   });
