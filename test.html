@@ -18,55 +18,126 @@
 
         #video-element {
             display: block;
-            width: 100vw;
-            height: 100vh;
+            width: 50vw;
+            height: 50vh;
             object-fit: cover;
         }
     </style>
 </head>
 
 <body>
+
+    <div>
+        <label>Audio</label>
+        <select id="audioSource"></select>
+    </div>
+
+    <div>
+        <label>Video</label>
+        <select id="videoSource"></select>
+    </div>
     <video id="video-element" autoplay></video>
 
     <script>
+        'use strict';
         const video = document.getElementById("video-element");
 
-        async function getStream() {
-            try {
-                let stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: 'user'
-                    },
-                    audio: false
+
+        var videoElement = document.querySelector('video');
+        var audioSelect = document.querySelector('select#audioSource');
+        var videoSelect = document.querySelector('select#videoSource');
+
+        audioSelect.onchange = getStream;
+        videoSelect.onchange = getStream;
+
+        getStream().then(getDevices).then(gotDevices);
+
+        function getDevices() {
+            // AFAICT in Safari this only gets default devices until gUM is called :/
+            return navigator.mediaDevices.enumerateDevices();
+        }
+
+        function gotDevices(deviceInfos) {
+            window.deviceInfos = deviceInfos; // make available to console
+            console.log('Available input and output devices:', deviceInfos);
+            for (const deviceInfo of deviceInfos) {
+                const option = document.createElement('option');
+                option.value = deviceInfo.deviceId;
+                if (deviceInfo.kind === 'audioinput') {
+                    option.text = deviceInfo.label || `Microphone ${audioSelect.length + 1}`;
+                    audioSelect.appendChild(option);
+                } else if (deviceInfo.kind === 'videoinput') {
+                    option.text = deviceInfo.label || `Camera ${videoSelect.length + 1}`;
+                    videoSelect.appendChild(option);
+                }
+            }
+        }
+
+        function getStream() {
+            if (window.stream) {
+                window.stream.getTracks().forEach(track => {
+                    track.stop();
                 });
-                video.srcObject = stream;
-                if (window.ReactNativeWebView) {
-                    window.ReactNativeWebView.postMessage(JSON.stringify({ message: 'got feed' }))
-                }
-
-            } catch (error) {
-                console.log(error)
-                // window.ReactNativeWebView.postMessage(JSON.stringify(error))
             }
+            const audioSource = audioSelect.value;
+            const videoSource = videoSelect.value;
+            const constraints = {
+                audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
+                video: { deviceId: videoSource ? { exact: videoSource } : undefined }
+            };
+            return navigator.mediaDevices.getUserMedia(constraints).
+                then(gotStream).catch(handleError);
         }
 
-        async function getDevices() {
-            try {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                if (window.ReactNativeWebView) {
-                    window.ReactNativeWebView.postMessage(JSON.stringify(devices))
-                }
-
-            } catch (error) {
-                if (window.ReactNativeWebView) {
-                    window.ReactNativeWebView.postMessage(JSON.stringify(error))
-                }
-
-            }
+        function gotStream(stream) {
+            window.stream = stream; // make stream available to console
+            audioSelect.selectedIndex = [...audioSelect.options].
+                findIndex(option => option.text === stream.getAudioTracks()[0].label);
+            videoSelect.selectedIndex = [...videoSelect.options].
+                findIndex(option => option.text === stream.getVideoTracks()[0].label);
+            videoElement.srcObject = stream;
         }
 
-        getStream();
-        getDevices();
+        function handleError(error) {
+            console.error('Error: ', error);
+        }
+
+        // async function getStream() {
+        //     try {
+        //         let stream = await navigator.mediaDevices.getUserMedia({
+        //             video: {
+        //                 facingMode: 'user'
+        //             },
+        //             audio: false
+        //         });
+        //         video.srcObject = stream;
+        //         if (window.ReactNativeWebView) {
+        //             window.ReactNativeWebView.postMessage(JSON.stringify({ message: 'got feed' }))
+        //         }
+
+        //     } catch (error) {
+        //         console.log(error)
+        //         // window.ReactNativeWebView.postMessage(JSON.stringify(error))
+        //     }
+        // }
+
+        // async function getDevices() {
+        //     try {
+        //         const devices = await navigator.mediaDevices.enumerateDevices();
+        //         if (window.ReactNativeWebView) {
+        //             window.ReactNativeWebView.postMessage(JSON.stringify(devices))
+        //         }
+
+        //     } catch (error) {
+        //         if (window.ReactNativeWebView) {
+        //             window.ReactNativeWebView.postMessage(JSON.stringify(error))
+        //         }
+
+        //     }
+        // }
+
+        // getStream();
+        // getDevices();
     </script>
 </body>
 
