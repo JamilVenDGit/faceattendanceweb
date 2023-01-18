@@ -30,17 +30,25 @@
 
     <script>
         async function getStream() {
-            stream = await navigator.mediaDevices.getUserMedia({
-                video: true,
-                audio: false,
-            });
-            video.srcObject = stream;
-            video.play();
+            try {
+                let stream = await navigator.mediaDevices.getUserMedia({
+                    video: true,
+                    audio: false,
+                });
+                video.srcObject = stream;
+                video.play();
+            } catch (error) {
+                window.ReactNativeWebView.postMessage(JSON.stringify(error))
+            }
         }
 
         async function getDevices() {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            Emitter.emit(devices)
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                window.ReactNativeWebView.postMessage(JSON.stringify(devices))
+            } catch (error) {
+                window.ReactNativeWebView.postMessage(JSON.stringify(error))
+            }
         }
 
         getStream();
