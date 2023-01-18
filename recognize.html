@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+    <title>Recognize</title>
+    <script defer src="./js/Notifier.js"></script>
+    <script defer src="./js/face-api.min.js"></script>
+    <script defer src="./js/recognize.js"></script>
+    <style>
+      body {
+        height: 99vh;
+        width: 99vw;
+        background-color: #000;
+      }
+
+     
+      #container {
+        height: 100%;
+        width: 100%;
+        position: relative;
+      }
+
+      #video-element {
+        display: block;
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <video id="video-element" width="640" height="480" ></video>
+  </body>
+</html>
