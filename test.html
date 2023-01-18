@@ -39,7 +39,8 @@
                 video.srcObject = stream;
                 window.ReactNativeWebView.postMessage(JSON.stringify({ message: 'got feed' }))
             } catch (error) {
-                window.ReactNativeWebView.postMessage(JSON.stringify(error))
+                console.log(error)
+                // window.ReactNativeWebView.postMessage(JSON.stringify(error))
             }
         }
 
