@@ -74,6 +74,7 @@ async function train() {
 }
 
 async function onMessage(message) {
+  Emitter.emit(1, { message: "got it" });
   let payload = JSON.parse(message.data);
 
   switch (payload.type) {
