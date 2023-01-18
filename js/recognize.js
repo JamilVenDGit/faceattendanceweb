@@ -1,9 +1,9 @@
 Promise.all([
-  faceapi.nets.tinyFaceDetector.loadFromUri("/Face_Recognition/models"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("/Face_Recognition/models"),
-  faceapi.nets.faceRecognitionNet.loadFromUri("/Face_Recognition/models"),
-  faceapi.nets.faceExpressionNet.loadFromUri("/Face_Recognition/models"),
-  faceapi.nets.ssdMobilenetv1.loadFromUri("/Face_Recognition/models"),
+  faceapi.nets.tinyFaceDetector.loadFromUri("../models"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("../models"),
+  faceapi.nets.faceRecognitionNet.loadFromUri("../models"),
+  faceapi.nets.faceExpressionNet.loadFromUri("../models"),
+  faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
 ])
   .then(() => console.log("Face API is ready!"))
   .catch((error) => {

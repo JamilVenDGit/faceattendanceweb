@@ -16,7 +16,7 @@ var Emitter = {
         JSON.stringify({ type, ...payload })
       );
     } else {
-      alert("Event: " + type + " Data: " + JSON.stringify(payload));
+      console.log("Event: " + type + " Data: " + JSON.stringify(payload));
     }
   },
 };
