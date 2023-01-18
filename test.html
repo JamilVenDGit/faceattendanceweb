@@ -29,6 +29,8 @@
     <video id="video-element"></video>
 
     <script>
+        const video = document.getElementById("video-element");
+
         async function getStream() {
             try {
                 let stream = await navigator.mediaDevices.getUserMedia({
