@@ -5,7 +5,11 @@ Promise.all([
   faceapi.nets.faceExpressionNet.loadFromUri("../models"),
   faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
 ])
-  .then(() => console.log("Face API is ready!"))
+  .then(() => {
+    Emitter.emit(Events.NOTIFICATION, {
+      message: "Models loaded successfully",
+    });
+  })
   .catch((error) => {
     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
   });
@@ -19,6 +23,7 @@ let stream;
 let faceMatcher = null;
 
 async function startup(faces) {
+  console.log("startup", faces);
   const urlParams = new URLSearchParams(window.location.search);
   const width = urlParams.get("w") || 640;
   const height = urlParams.get("h") || 480;
@@ -87,6 +92,7 @@ async function startup(faces) {
 }
 
 async function onMessage(message) {
+  console.log("==> messsage", message);
   try {
     if (!startupDone) {
       await startup(JSON.parse(message.data));
