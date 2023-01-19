@@ -8,6 +8,7 @@ Promise.all([
   .then(() => {
     Emitter.emit(Events.NOTIFICATION, {
       message: "Models loaded successfully",
+      modelLoaded: true,
     });
     console.log("Face API is ready!");
   })
