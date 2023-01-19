@@ -9,6 +9,7 @@ Promise.all([
     Emitter.emit(Events.NOTIFICATION, {
       message: "Models loaded successfully",
     });
+    console.log("Face API is ready!");
   })
   .catch((error) => {
     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
