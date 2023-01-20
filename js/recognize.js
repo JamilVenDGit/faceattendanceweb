@@ -34,6 +34,8 @@ async function startup(faces) {
     video: true,
     audio: false,
   });
+  const settings = stream.getVideoTracks()[0].getSettings();
+  Emitter.emit(Events.DATA, { settings });
 
   video.width = width;
   video.height = height;
