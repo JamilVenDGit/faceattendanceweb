@@ -27,8 +27,8 @@ let faceMatcher = null;
 async function startup(faces) {
   console.log("startup", faces);
   const urlParams = new URLSearchParams(window.location.search);
-  // const width = urlParams.get("w") || 640;
-  // const height = urlParams.get("h") || 480;
+  const width = urlParams.get("w") || 640;
+  const height = urlParams.get("h") || 480;
 
   stream = await navigator.mediaDevices.getUserMedia({
     video: true,
@@ -37,8 +37,8 @@ async function startup(faces) {
   const settings = stream.getVideoTracks()[0].getSettings();
   Emitter.emit(Events.DATA, { settings });
 
-  // video.width = width;
-  // video.height = height;
+  video.width = width;
+  video.height = height;
   video.srcObject = stream;
   video.play();
 
