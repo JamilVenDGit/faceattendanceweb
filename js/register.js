@@ -31,12 +31,8 @@ async function getStream() {
     video.srcObject = stream;
     video.play();
     const devices = await navigator.mediaDevices.enumerateDevices();
-    console.log(
-      "decices",
-      devices.filter((item) => item.kind === "videoinput")
-    );
-    const supported = navigator.mediaDevices.getSupportedConstraints();
-    console.log("==> constraints", supported);
+    const videoDevices = devices.filter((item) => item.kind === "videoinput");
+    switchCamera(videoDevices[0].deviceId);
   } catch (error) {
     console.log(error);
   }
@@ -95,16 +91,14 @@ function stopCamera() {
   }
 }
 
-async function switchCamera() {
+async function switchCamera(deviceId) {
   try {
     stopCamera();
-    console.log("==> switch camera called");
-    cameraMode = cameraMode === "user" ? "environment" : "user";
+    // console.log("==> switch camera called");
+    // cameraMode = cameraMode === "user" ? "environment" : "user";
     const constraints = {
       video: {
-        facingMode: {
-          exact: cameraMode,
-        },
+        deviceId: deviceId,
       },
       audio: false,
     };
