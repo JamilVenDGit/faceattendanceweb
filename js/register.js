@@ -17,13 +17,14 @@ Promise.all([
     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
   });
 
+let cameraMode = "user";
 let stream;
 let data = {};
 const video = document.getElementById("video-element");
 
 async function getStream() {
   stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: { facingMode: { exact: cameraMode } },
     audio: false,
   });
   video.srcObject = stream;
@@ -73,6 +74,22 @@ async function train() {
       error: "Error in training faces!" + "Error: " + error.message,
     });
   }
+}
+
+async function switchCamera() {
+  Emitter.emit(Events.NOTIFICATION, { message: "Switch camera pressed" });
+  cameraMode = cameraMode === "user" ? "environment" : "user";
+  const constraints = {
+    video: {
+      facingMode: {
+        exact: cameraMode,
+      },
+    },
+    audio: false,
+  };
+  stream = await navigator.mediaDevices.getUserMedia(constraints);
+  video.srcObject = stream;
+  video.play();
 }
 
 async function onMessage(message) {
