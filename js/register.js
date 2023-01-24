@@ -87,6 +87,7 @@ async function switchCamera() {
     },
     audio: false,
   };
+  console.log("==> constraints", constraints);
   stream = await navigator.mediaDevices.getUserMedia(constraints);
   video.srcObject = stream;
   video.play();
