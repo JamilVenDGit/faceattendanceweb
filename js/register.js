@@ -6,7 +6,7 @@ Promise.all([
   faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
 ])
   .then(() => {
-    Emitter.emit(Events.NOTIFICATION, {
+    Emitter.emit(Events.MODEL_LOADED, {
       message: "Models loaded successfully",
     });
     getStream().catch((error) => {

@@ -8,6 +8,7 @@ var Events = {
   TAKE_PHOTO: "take_photo",
   DONE_PRESS: "done_press",
   SWITCH_CAMEA: "switch_camera",
+  MODEL_LOADED: "model_loaded",
 };
 
 var Emitter = {
