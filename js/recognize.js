@@ -83,14 +83,14 @@ async function startup(faces) {
 
     if (payload.length > 0) Emitter.emit(Events.FACE_FOUND, { data: payload });
 
-    results.forEach((result, i) => {
-      const box = resizedDetections[i].detection.box;
-      const drawBox = new faceapi.draw.DrawBox(box, {
-        label: result.toString(),
-      });
+    // results.forEach((result, i) => {
+    //   const box = resizedDetections[i].detection.box;
+    //   const drawBox = new faceapi.draw.DrawBox(box, {
+    //     label: result.toString(),
+    //   });
 
-      drawBox.draw(canvas);
-    });
+    //   drawBox.draw(canvas);
+    // });
   }, 500);
 }
 
