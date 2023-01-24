@@ -24,7 +24,15 @@ const video = document.getElementById("video-element");
 
 async function getStream() {
   stream = await navigator.mediaDevices.getUserMedia({
-    video: { facingMode: { exact: cameraMode } },
+    video: {
+      facingMode: "environment",
+      width: {
+        min: 1280,
+      },
+      height: {
+        min: 720,
+      },
+    },
     audio: false,
   });
   video.srcObject = stream;
