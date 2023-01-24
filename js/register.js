@@ -76,7 +76,17 @@ async function train() {
   }
 }
 
+function stopCamera() {
+  if (stream) {
+    console.log("stop camera");
+    stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+  }
+}
+
 async function switchCamera() {
+  stopCamera();
   console.log("==> switch camera called");
   cameraMode = cameraMode === "user" ? "environment" : "user";
   const constraints = {
