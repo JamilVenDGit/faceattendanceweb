@@ -23,16 +23,20 @@ let data = {};
 const video = document.getElementById("video-element");
 
 async function getStream() {
-  stream = await navigator.mediaDevices.getUserMedia({
-    video: {
-      facingMode: {
-        exact: "environment",
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: {
+          exact: "environment",
+        },
       },
-    },
-    audio: false,
-  });
-  video.srcObject = stream;
-  video.play();
+      audio: false,
+    });
+    video.srcObject = stream;
+    video.play();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function takePhoto() {
