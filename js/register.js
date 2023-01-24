@@ -32,7 +32,7 @@ async function getStream() {
     video.play();
     const devices = await navigator.mediaDevices.enumerateDevices();
     const videoDevices = devices.filter((item) => item.kind === "videoinput");
-    switchCamera(videoDevices[1].deviceId);
+    switchCamera(videoDevices[2].deviceId);
   } catch (error) {
     console.log(error);
   }
