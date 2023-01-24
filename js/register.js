@@ -102,6 +102,9 @@ async function onMessage(message) {
     case Events.DONE_PRESS:
       train();
       break;
+    case Events.SWITCH_CAMEA:
+      switchCamera();
+      break;
     default:
       break;
   }
