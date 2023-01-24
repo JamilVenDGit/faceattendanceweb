@@ -30,9 +30,9 @@ async function getStream() {
     });
     video.srcObject = stream;
     video.play();
-    // const devices = await navigator.mediaDevices.enumerateDevices();
-    // const videoDevices = devices.filter((item) => item.kind === "videoinput");
-    // switchCamera(videoDevices[8].deviceId);
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter((item) => item.kind === "videoinput");
+    console.log("==> video devices", videoDevices);
   } catch (error) {
     console.log(error);
   }
