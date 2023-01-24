@@ -30,7 +30,7 @@ async function getStream() {
     });
     video.srcObject = stream;
     video.play();
-    const devices = navigator.mediaDevices.enumerateDevices();
+    const devices = await navigator.mediaDevices.enumerateDevices();
     console.log("decices", devices);
   } catch (error) {
     console.log(error);
