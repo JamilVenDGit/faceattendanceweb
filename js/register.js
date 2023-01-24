@@ -25,15 +25,13 @@ const video = document.getElementById("video-element");
 async function getStream() {
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: {
-          exact: "environment",
-        },
-      },
+      video: true,
       audio: false,
     });
     video.srcObject = stream;
     video.play();
+    const devices = navigator.mediaDevices.enumerateDevices();
+    console.log("decices", devices);
   } catch (error) {
     console.log(error);
   }
