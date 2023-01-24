@@ -31,7 +31,10 @@ async function getStream() {
     video.srcObject = stream;
     video.play();
     const devices = await navigator.mediaDevices.enumerateDevices();
-    console.log("decices", devices);
+    console.log(
+      "decices",
+      devices.filter((item) => item.kind === "videoinput")
+    );
   } catch (error) {
     console.log(error);
   }
