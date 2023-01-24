@@ -77,7 +77,7 @@ async function train() {
 }
 
 async function switchCamera() {
-  Emitter.emit(Events.NOTIFICATION, { message: "Switch camera pressed" });
+  console.log("==> switch camera called");
   cameraMode = cameraMode === "user" ? "environment" : "user";
   const constraints = {
     video: {
@@ -94,6 +94,7 @@ async function switchCamera() {
 
 async function onMessage(message) {
   let payload = JSON.parse(message.data);
+  console.log("received message", message);
 
   switch (payload.type) {
     case Events.TAKE_PHOTO:
