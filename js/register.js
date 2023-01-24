@@ -35,6 +35,8 @@ async function getStream() {
       "decices",
       devices.filter((item) => item.kind === "videoinput")
     );
+    const supported = navigator.mediaDevices.getSupportedConstraints();
+    console.log("==> constraints", supported);
   } catch (error) {
     console.log(error);
   }
@@ -87,7 +89,6 @@ async function train() {
 
 function stopCamera() {
   if (stream) {
-    console.log("stop camera");
     stream.getTracks().forEach((track) => {
       track.stop();
     });
@@ -95,21 +96,25 @@ function stopCamera() {
 }
 
 async function switchCamera() {
-  stopCamera();
-  console.log("==> switch camera called");
-  cameraMode = cameraMode === "user" ? "environment" : "user";
-  const constraints = {
-    video: {
-      facingMode: {
-        exact: cameraMode,
+  try {
+    stopCamera();
+    console.log("==> switch camera called");
+    cameraMode = cameraMode === "user" ? "environment" : "user";
+    const constraints = {
+      video: {
+        facingMode: {
+          exact: cameraMode,
+        },
       },
-    },
-    audio: false,
-  };
-  console.log("==> constraints", constraints);
-  stream = await navigator.mediaDevices.getUserMedia(constraints);
-  video.srcObject = stream;
-  video.play();
+      audio: false,
+    };
+
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    video.srcObject = stream;
+    video.play();
+  } catch (error) {
+    console.log("ERROR", error);
+  }
 }
 
 async function onMessage(message) {
