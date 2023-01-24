@@ -7,7 +7,7 @@ var Events = {
   TRAINING_FINISH: "training_finish",
   TAKE_PHOTO: "take_photo",
   DONE_PRESS: "done_press",
-  SWITCH_CAMEA: "switchCamera",
+  SWITCH_CAMEA: "switch_camera",
 };
 
 var Emitter = {
