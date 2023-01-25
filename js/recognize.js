@@ -95,6 +95,33 @@ async function startup(faces) {
   }, 500);
 }
 
+function stopCamera() {
+  if (stream) {
+    stream.getTracks().forEach((track) => {
+      track.stop();
+    });
+  }
+}
+
+async function switchCamera() {
+  try {
+    stopCamera();
+    cameraMode = cameraMode === "user" ? "environment" : "user";
+    const constraints = {
+      video: {
+        facingMode: { exact: cameraMode },
+      },
+      audio: false,
+    };
+
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    video.srcObject = stream;
+    video.play();
+  } catch (error) {
+    console.log("ERROR", error);
+  }
+}
+
 async function onMessage(message) {
   console.log("==> messsage", message.data);
   const data = JSON.parse(message.data);
@@ -102,15 +129,14 @@ async function onMessage(message) {
   try {
     switch (data.type) {
       case "data":
-        console.log("data type");
-        // if (!startupDone) {
-        //   await startup(JSON.parse(message.data.data));
-        //   startupDone = true;
-        // }
+        if (!startupDone) {
+          await startup(JSON.parse(message.data.data));
+          startupDone = true;
+        }
         break;
 
       case "switch_camera":
-        console.log("switch camera function received...");
+        switchCamera();
         break;
 
       default:
