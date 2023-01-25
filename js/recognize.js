@@ -19,6 +19,7 @@ Promise.all([
 const video = document.getElementById("video-element");
 const container = document.getElementById("container");
 
+let cameraMode = "user";
 let startupDone = false;
 let stream;
 let faceMatcher = null;
@@ -95,19 +96,38 @@ async function startup(faces) {
 }
 
 async function onMessage(message) {
-  console.log("==> messsage", message);
+  console.log("==> messsage", message.data);
+  const data = JSON.parse(message);
+
   try {
-    if (!startupDone) {
-      await startup(JSON.parse(message.data));
-      startupDone = true;
+    switch (data.type) {
+      case "data":
+        if (!startupDone) {
+          await startup(JSON.parse(message.data.data));
+          startupDone = true;
+        }
+        break;
+
+      case "switch_camera":
+        console.log("switch camera function received...");
+        break;
+
+      default:
+        break;
     }
-  } catch (error) {
-    Emitter.emit(Events.NOTIFICATION, {
-      notificationType: 3,
-      message: "Error from webview!",
-    });
-    Emitter.emit(Events.ERROR, { error: error.message });
-  }
+  } catch (error) {}
+  // try {
+  //   if (!startupDone) {
+  //     await startup(JSON.parse(message.data));
+  //     startupDone = true;
+  //   }
+  // } catch (error) {
+  //   Emitter.emit(Events.NOTIFICATION, {
+  //     notificationType: 3,
+  //     message: "Error from webview!",
+  //   });
+  //   Emitter.emit(Events.ERROR, { error: error.message });
+  // }
 }
 
 if (navigator.userAgent.indexOf("Chrome") != -1) {
