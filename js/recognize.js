@@ -102,10 +102,11 @@ async function onMessage(message) {
   try {
     switch (data.type) {
       case "data":
-        if (!startupDone) {
-          await startup(JSON.parse(message.data.data));
-          startupDone = true;
-        }
+        console.log("data type");
+        // if (!startupDone) {
+        //   await startup(JSON.parse(message.data.data));
+        //   startupDone = true;
+        // }
         break;
 
       case "switch_camera":
@@ -116,18 +117,6 @@ async function onMessage(message) {
         break;
     }
   } catch (error) {}
-  // try {
-  //   if (!startupDone) {
-  //     await startup(JSON.parse(message.data));
-  //     startupDone = true;
-  //   }
-  // } catch (error) {
-  //   Emitter.emit(Events.NOTIFICATION, {
-  //     notificationType: 3,
-  //     message: "Error from webview!",
-  //   });
-  //   Emitter.emit(Events.ERROR, { error: error.message });
-  // }
 }
 
 if (navigator.userAgent.indexOf("Chrome") != -1) {
