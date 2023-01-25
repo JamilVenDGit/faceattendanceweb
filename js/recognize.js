@@ -130,7 +130,7 @@ async function onMessage(message) {
     switch (data.type) {
       case "data":
         if (!startupDone) {
-          await startup(JSON.parse(message.data.data));
+          await startup(data.data);
           startupDone = true;
         }
         break;
