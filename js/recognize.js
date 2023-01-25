@@ -97,7 +97,7 @@ async function startup(faces) {
 
 async function onMessage(message) {
   console.log("==> messsage", message.data);
-  const data = JSON.parse(message);
+  const data = JSON.parse(message.data);
 
   try {
     switch (data.type) {
