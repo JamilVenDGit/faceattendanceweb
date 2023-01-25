@@ -47,9 +47,9 @@ async function startup(faces) {
     height: video.height,
   };
 
-  const labeledFaceDescriptors = faces.map((item) =>
-    faceapi.LabeledFaceDescriptors.fromJSON(item)
-  );
+  const labeledFaceDescriptors = faces
+    .flat()
+    .map((item) => faceapi.LabeledFaceDescriptors.fromJSON(item));
 
   faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.6);
 
