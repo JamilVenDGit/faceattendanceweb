@@ -142,7 +142,9 @@ async function onMessage(message) {
       default:
         break;
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("ERROR", error);
+  }
 }
 
 if (navigator.userAgent.indexOf("Chrome") != -1) {
