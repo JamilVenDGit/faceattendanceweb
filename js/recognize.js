@@ -19,7 +19,8 @@ Promise.all([
 const video = document.getElementById("video-element");
 const container = document.getElementById("container");
 
-let cameraMode = "user";
+const urlParams = new URLSearchParams(window.location.search);
+let cameraMode = urlParams.get("cammode") || "user";
 let startupDone = false;
 let stream;
 let faceMatcher = null;
@@ -31,7 +32,7 @@ async function startup(faces) {
   const height = urlParams.get("h") || 480;
 
   stream = await navigator.mediaDevices.getUserMedia({
-    video: true,
+    video: { facingMode: { exact: cameraMode } },
     audio: false,
   });
   const settings = stream.getVideoTracks()[0].getSettings();
