@@ -18,7 +18,7 @@ Promise.all([
   });
 
 const urlParams = new URLSearchParams(window.location.search);
-let cameraMode = urlParams.get("cammode");
+let cameraMode = urlParams.get("cammode") || "user";
 let stream;
 let data = {};
 const video = document.getElementById("video-element");
