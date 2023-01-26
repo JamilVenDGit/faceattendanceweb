@@ -17,7 +17,8 @@ Promise.all([
     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
   });
 
-let cameraMode = "user";
+const urlParams = new URLSearchParams(window.location.search);
+let cameraMode = urlParams.get("cammode");
 let stream;
 let data = {};
 const video = document.getElementById("video-element");
@@ -25,7 +26,9 @@ const video = document.getElementById("video-element");
 async function getStream() {
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
+      video: {
+        facingMode: { exact: cameraMode },
+      },
       audio: false,
     });
     video.srcObject = stream;
@@ -40,7 +43,7 @@ async function takePhoto() {
   const imageCapture = new ImageCapture(videoTrack);
   imageCapture.takePhoto().then(async (blob) => {
     // // Get Label
-    const urlParams = new URLSearchParams(window.location.search);
+
     const label = urlParams.get("id") || "unknown";
 
     const picURL = window.URL.createObjectURL(blob);
