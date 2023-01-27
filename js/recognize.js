@@ -67,7 +67,7 @@ async function startup(faces) {
     const detections = await faceapi
       .detectAllFaces(
         video,
-        new faceapi.SsdMobilenetv1Options({ minConfidence: 0.9 })
+        new faceapi.SsdMobilenetv1Options({ minConfidence: 0.95 })
       )
       .withFaceLandmarks()
       .withFaceDescriptors();
