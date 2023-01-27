@@ -78,6 +78,8 @@ async function startup(faces) {
       faceMatcher.findBestMatch(d.descriptor)
     );
 
+    console.log("==> results", results);
+
     const payload = results.map((item) => ({
       label: item.label,
       distance: item.distance,
