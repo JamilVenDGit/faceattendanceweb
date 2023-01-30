@@ -28,19 +28,27 @@
 <body>
     <h1>Hello World</h1>
 
-    <input id="input-photos" type="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+    <input id="input-photos" type="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg" />
 
     <button>Done</button>
 
-
     <script>
-        const input = document.querySelector('#input-photos');
+        const label = "yaqoob";
+        const data = {};
+        const input = document.querySelector("#input-photos");
         input.addEventListener("change", () => {
-            const files = input.files
+            const files = input.files;
             for (let i = 0; i < files.length; i++) {
-                console.log(files[i])
+                const picURL = window.URL.createObjectURL(files[i]);
+
+                if (Array.isArray(data[label])) {
+                    data[label].push(picURL);
+                } else {
+                    data[label] = [picURL];
+                }
             }
-        })
+            console.log('==> data', data)
+        });
     </script>
 </body>
 
