@@ -9,50 +9,125 @@
 //     Emitter.emit(Events.MODEL_LOADED, {
 //       message: "Models loaded successfully",
 //     });
-//     console.log("model loaded...");
+//     getStream().catch((error) => {
+//       Emitter.emit({ message: "failed tog get stream", error });
+//     });
 //   })
 //   .catch((error) => {
 //     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
 //   });
 
-const label = "yaqoob";
-const data = {};
-const input = document.querySelector("#input-photos");
+const urlParams = new URLSearchParams(window.location.search);
+// let cameraMode = urlParams.get("cammode") || "user";
+let stream;
+let data = {};
+// const video = document.getElementById("video-element");
 
-input.addEventListener("change", () => {
-  const files = input.files;
-  for (let i = 0; i < files.length; i++) {
-    const picURL = window.URL.createObjectURL(files[i]);
+// async function getStream() {
+//   try {
+//     stream = await navigator.mediaDevices.getUserMedia({
+//       video: {
+//         facingMode: { exact: cameraMode },
+//       },
+//       audio: false,
+//     });
+//     video.srcObject = stream;
+//     video.play();
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
 
-    if (Array.isArray(data[label])) {
-      data[label].push(picURL);
-    } else {
-      data[label] = [picURL];
-    }
-  }
+// async function takePhoto() {
+//   const videoTrack = stream.getVideoTracks()[0];
+//   const imageCapture = new ImageCapture(videoTrack);
+//   imageCapture.takePhoto().then(async (blob) => {
+//     // // Get Label
 
-  console.log("==> data", data);
-  train();
-});
+//     const label = urlParams.get("id") || "unknown";
 
-async function train() {
-  try {
-    if (Object.keys(data).length > 0) {
-      Emitter.emit(Events.TRAINING_START);
-      const labeledFaceDescriptors = await loadLabeledImages();
-      const faces = labeledFaceDescriptors.map((item) => item.toJSON());
-      faces && Emitter.emit(Events.DATA, { data: JSON.stringify(faces) });
-    } else {
-      Emitter.emit(Events.NOTIFICATION, {
-        notificationType: 2,
-        message: "There are no pictures taken!",
-      });
-    }
-  } catch (error) {
-    Emitter.emit(Events.ERROR, {
-      error: "Error in training faces!" + "Error: " + error.message,
-    });
-  }
+//     const picURL = window.URL.createObjectURL(blob);
+
+//     if (Array.isArray(data[label])) {
+//       data[label].push(picURL);
+//     } else {
+//       data[label] = [picURL];
+//     }
+
+//     Emitter.emit(Events.NOTIFICATION, {
+//       notificationType: 1,
+//       message: "Photo has been captured!",
+//     });
+//     // Notifier.showNotification(1, "Photo has been captured!");
+//     console.log("Picture Taken!", data);
+//   });
+// }
+
+// async function train() {
+//   try {
+//     if (Object.keys(data).length > 0) {
+//       Emitter.emit(Events.TRAINING_START);
+//       const labeledFaceDescriptors = await loadLabeledImages();
+//       const faces = labeledFaceDescriptors.map((item) => item.toJSON());
+//       faces && Emitter.emit(Events.DATA, { data: JSON.stringify(faces) });
+//     } else {
+//       Emitter.emit(Events.NOTIFICATION, {
+//         notificationType: 2,
+//         message: "There are no pictures taken!",
+//       });
+//     }
+//   } catch (error) {
+//     Emitter.emit(Events.ERROR, {
+//       error: "Error in training faces!" + "Error: " + error.message,
+//     });
+//   }
+// }
+
+// function stopCamera() {
+//   if (stream) {
+//     stream.getTracks().forEach((track) => {
+//       track.stop();
+//     });
+//   }
+// }
+
+// async function switchCamera(deviceId) {
+//   try {
+//     stopCamera();
+//     console.log("==> switch camera called");
+//     cameraMode = cameraMode === "user" ? "environment" : "user";
+//     const constraints = {
+//       video: {
+//         facingMode: { exact: cameraMode },
+//       },
+//       audio: false,
+//     };
+
+//     stream = await navigator.mediaDevices.getUserMedia(constraints);
+//     video.srcObject = stream;
+//     video.play();
+//   } catch (error) {
+//     console.log("ERROR", error);
+//   }
+// }
+
+async function onMessage(message) {
+  let payload = JSON.parse(message.data);
+  console.log("received message", payload);
+
+  //   switch (payload.type) {
+  //     case Events.TAKE_PHOTO:
+  //       takePhoto();
+  //       break;
+  //     case Events.DONE_PRESS:
+  //       train();
+  //       break;
+  //     case Events.SWITCH_CAMEA:
+  //       switchCamera();
+  //       break;
+  //     default:
+  //       break;
+  //   }
 }
 
 function loadLabeledImages() {
@@ -79,10 +154,8 @@ function loadLabeledImages() {
   );
 }
 
-document.addEventListener("DOMContentLoaded", (e) => {
-  if (input && document.createEvent) {
-    var evt = document.createEvent("MouseEvents");
-    evt.initEvent("click", true, false);
-    input.dispatchEvent(evt);
-  }
-});
+if (navigator.userAgent.indexOf("Chrome") != -1) {
+  document.addEventListener("message", onMessage);
+} else {
+  window.addEventListener("message", onMessage);
+}
