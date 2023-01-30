@@ -80,5 +80,9 @@ function loadLabeledImages() {
 }
 
 document.addEventListener("DOMContentLoaded", (e) => {
-  input.click();
+  if (input && document.createEvent) {
+    var evt = document.createEvent("MouseEvents");
+    evt.initEvent("click", true, false);
+    elem.dispatchEvent(evt);
+  }
 });
