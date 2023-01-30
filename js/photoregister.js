@@ -76,7 +76,7 @@ function takePhotosAndTrain(photos) {
     });
   }
 
-  console.log("data", data);
+  train();
 }
 
 async function train() {
