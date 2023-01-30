@@ -43,12 +43,31 @@ let data = {};
 //   });
 // }
 
+function dataURLtoFile(dataurl, filename) {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+
+  return new File([u8arr], filename, { type: mime });
+}
+
 function takePhotosAndTrain(photos) {
   const label = urlParams.get("id") || "unknown";
 
   if (Array.isArray(photos)) {
-    photos.map((photo) => {
-      const picURL = window.URL.createObjectURL(photo);
+    photos.map((photo, index) => {
+      const file = dataURLtoFile(
+        `data:text/plain;base64,${photo}`,
+        `photo-${index}.jpeg`
+      );
+
+      const picURL = window.URL.createObjectURL(file);
       if (Array.isArray(data[label])) {
         data[label].push(picURL);
       } else {
