@@ -63,7 +63,7 @@ function takePhotosAndTrain(photos) {
   if (Array.isArray(photos)) {
     photos.map((photo, index) => {
       const file = dataURLtoFile(
-        `data:text/plain;base64,${photo}`,
+        `data:image/*;base64,${photo}`,
         `photo-${index}.jpeg`
       );
 
