@@ -43,71 +43,60 @@ let data = {};
 //   });
 // }
 
-// async function train() {
-//   try {
-//     if (Object.keys(data).length > 0) {
-//       Emitter.emit(Events.TRAINING_START);
-//       const labeledFaceDescriptors = await loadLabeledImages();
-//       const faces = labeledFaceDescriptors.map((item) => item.toJSON());
-//       faces && Emitter.emit(Events.DATA, { data: JSON.stringify(faces) });
-//     } else {
-//       Emitter.emit(Events.NOTIFICATION, {
-//         notificationType: 2,
-//         message: "There are no pictures taken!",
-//       });
-//     }
-//   } catch (error) {
-//     Emitter.emit(Events.ERROR, {
-//       error: "Error in training faces!" + "Error: " + error.message,
-//     });
-//   }
-// }
+function takePhotosAndTrain(photos) {
+  const label = urlParams.get("id") || "unknown";
 
-// function stopCamera() {
-//   if (stream) {
-//     stream.getTracks().forEach((track) => {
-//       track.stop();
-//     });
-//   }
-// }
+  if (Array.isArray(photos)) {
+    photos.map((photo) => {
+      const picURL = window.URL.createObjectURL(photo);
+      if (Array.isArray(data[label])) {
+        data[label].push(picURL);
+      } else {
+        data[label] = [picURL];
+      }
+    });
+  }
 
-// async function switchCamera(deviceId) {
-//   try {
-//     stopCamera();
-//     console.log("==> switch camera called");
-//     cameraMode = cameraMode === "user" ? "environment" : "user";
-//     const constraints = {
-//       video: {
-//         facingMode: { exact: cameraMode },
-//       },
-//       audio: false,
-//     };
+  console.log("data", data);
+}
 
-//     stream = await navigator.mediaDevices.getUserMedia(constraints);
-//     video.srcObject = stream;
-//     video.play();
-//   } catch (error) {
-//     console.log("ERROR", error);
-//   }
-// }
+async function train() {
+  try {
+    if (Object.keys(data).length > 0) {
+      Emitter.emit(Events.TRAINING_START);
+      const labeledFaceDescriptors = await loadLabeledImages();
+      const faces = labeledFaceDescriptors.map((item) => item.toJSON());
+      faces && Emitter.emit(Events.DATA, { data: JSON.stringify(faces) });
+    } else {
+      Emitter.emit(Events.NOTIFICATION, {
+        notificationType: 2,
+        message: "There are no pictures taken!",
+      });
+    }
+  } catch (error) {
+    Emitter.emit(Events.ERROR, {
+      error: "Error in training faces!" + "Error: " + error.message,
+    });
+  }
+}
 
 async function onMessage(message) {
   let payload = JSON.parse(message.data);
   console.log("received message", payload);
 
-  //   switch (payload.type) {
-  //     case Events.TAKE_PHOTO:
-  //       takePhoto();
-  //       break;
-  //     case Events.DONE_PRESS:
-  //       train();
-  //       break;
-  //     case Events.SWITCH_CAMEA:
-  //       switchCamera();
-  //       break;
-  //     default:
-  //       break;
-  //   }
+  switch (payload.type) {
+    case "send_photos":
+      takePhotosAndTrain(payload.data);
+      break;
+    case Events.DONE_PRESS:
+      train();
+      break;
+    case Events.SWITCH_CAMEA:
+      switchCamera();
+      break;
+    default:
+      break;
+  }
 }
 
 function loadLabeledImages() {
