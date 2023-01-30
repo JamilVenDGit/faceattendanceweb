@@ -9,6 +9,7 @@ Promise.all([
     Emitter.emit(Events.MODEL_LOADED, {
       message: "Models loaded successfully",
     });
+    console.log("model loaded...");
     getStream().catch((error) => {
       Emitter.emit({ message: "failed tog get stream", error });
     });
