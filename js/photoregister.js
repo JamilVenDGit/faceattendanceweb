@@ -1,42 +1,22 @@
-// Promise.all([
-//   faceapi.nets.tinyFaceDetector.loadFromUri("../models"),
-//   faceapi.nets.faceLandmark68Net.loadFromUri("../models"),
-//   faceapi.nets.faceRecognitionNet.loadFromUri("../models"),
-//   faceapi.nets.faceExpressionNet.loadFromUri("../models"),
-//   faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
-// ])
-//   .then(() => {
-//     Emitter.emit(Events.MODEL_LOADED, {
-//       message: "Models loaded successfully",
-//     });
-//     getStream().catch((error) => {
-//       Emitter.emit({ message: "failed tog get stream", error });
-//     });
-//   })
-//   .catch((error) => {
-//     Emitter.emit(Events.ERROR, { error: "Errors loading models" });
-//   });
+Promise.all([
+  faceapi.nets.tinyFaceDetector.loadFromUri("../models"),
+  faceapi.nets.faceLandmark68Net.loadFromUri("../models"),
+  faceapi.nets.faceRecognitionNet.loadFromUri("../models"),
+  faceapi.nets.faceExpressionNet.loadFromUri("../models"),
+  faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
+])
+  .then(() => {
+    Emitter.emit(Events.MODEL_LOADED, {
+      message: "Models loaded successfully",
+    });
+  })
+  .catch((error) => {
+    Emitter.emit(Events.ERROR, { error: "Errors loading models" });
+  });
 
 const urlParams = new URLSearchParams(window.location.search);
-// let cameraMode = urlParams.get("cammode") || "user";
 let stream;
 let data = {};
-// const video = document.getElementById("video-element");
-
-// async function getStream() {
-//   try {
-//     stream = await navigator.mediaDevices.getUserMedia({
-//       video: {
-//         facingMode: { exact: cameraMode },
-//       },
-//       audio: false,
-//     });
-//     video.srcObject = stream;
-//     video.play();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
 
 // async function takePhoto() {
 //   const videoTrack = stream.getVideoTracks()[0];
