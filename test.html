@@ -28,9 +28,20 @@
 <body>
     <h1>Hello World</h1>
 
-    <input type="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+    <input id="input-photos" type="file" multiple="multiple" accept="image/jpeg, image/png, image/jpg">
+
+    <button>Done</button>
 
 
+    <script>
+        const input = document.querySelector('#input-photos');
+        input.addEventListener("change", () => {
+            const files = input.files
+            for (let i = 0; i < files.length; i++) {
+                console.log(files[i])
+            }
+        })
+    </script>
 </body>
 
 </html>
