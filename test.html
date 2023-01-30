@@ -26,98 +26,9 @@
 </head>
 
 <body>
-    <video id="video" width="640" height="480" autoplay></video>
-    <button id="snap">Snap Photo</button>
-    <canvas id="canvas" width="640" height="480"></canvas>
+    <h1>Hello World</h1>
 
-    <!-- <div>
-        <label>Audio</label>
-        <select id="audioSource"></select>
-    </div>
 
-    <div>
-        <label>Video</label>
-        <select id="videoSource"></select>
-    </div>
-    <video id="video-element" autoplay></video> -->
-
-    <script>
-        // Grab elements, create settings, etc.
-        var video = document.getElementById('video');
-        var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
-
-        // Get access to the camera!
-        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-            // Not adding `{ audio: true }` since we only want video now
-            navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-                //video.src = window.URL.createObjectURL(stream);
-                video.srcObject = stream;
-                video.play();
-            });
-        }
-
-        document.getElementById("snap").addEventListener("click", function () {
-            context.drawImage(video, 0, 0, 640, 480);
-        });
-
-        /* Legacy code below: getUserMedia
-        else if(navigator.getUserMedia) { // Standard
-            navigator.getUserMedia({ video: true }, function(stream) {
-                video.src = stream;
-                video.play();
-            }, errBack);
-        } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
-            navigator.webkitGetUserMedia({ video: true }, function(stream){
-                video.src = window.webkitURL.createObjectURL(stream);
-                video.play();
-            }, errBack);
-        } else if(navigator.mozGetUserMedia) { // Mozilla-prefixed
-            navigator.mozGetUserMedia({ video: true }, function(stream){
-                video.srcObject = stream;
-                video.play();
-            }, errBack);
-        }
-        */
-
-        // async function getStream() {
-        //     try {
-        //         let stream = await navigator.mediaDevices.getUserMedia({
-        //             video: {
-        //                 facingMode: 'user'
-        //             },
-        //             audio: false
-        //         });
-        //         video.srcObject = stream;
-        //         if (window.ReactNativeWebView) {
-        //             window.ReactNativeWebView.postMessage(JSON.stringify({ message: 'got feed' }))
-        //         }
-
-        //     } catch (error) {
-        //         console.log(error)
-        //         // window.ReactNativeWebView.postMessage(JSON.stringify(error))
-        //     }
-        // }
-
-        // async function getDevices() {
-        //     try {
-        //         const devices = await navigator.mediaDevices.enumerateDevices();
-        //         if (window.ReactNativeWebView) {
-        //             window.ReactNativeWebView.postMessage(JSON.stringify(devices))
-        //         }
-
-        //     } catch (error) {
-        //         if (window.ReactNativeWebView) {
-        //             window.ReactNativeWebView.postMessage(JSON.stringify(error))
-        //         }
-
-        //     }
-        // }
-
-        // getStream();
-        // getDevices();
-    </script>
 </body>
-
 
 </html>
