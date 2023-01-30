@@ -83,6 +83,6 @@ document.addEventListener("DOMContentLoaded", (e) => {
   if (input && document.createEvent) {
     var evt = document.createEvent("MouseEvents");
     evt.initEvent("click", true, false);
-    elem.dispatchEvent(evt);
+    input.dispatchEvent(evt);
   }
 });
